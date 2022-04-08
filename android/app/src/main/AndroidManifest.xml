@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nnb_flutter">
+    package="com.nonunbub.nnb_flutter">
    <application
-        android:label="nnb_flutter"
+        android:label="노는법"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

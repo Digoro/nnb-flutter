@@ -1,4 +1,4 @@
-package com.example.nnb_flutter
+package com.nonunbub.nnb_flutter
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -92,6 +92,6 @@ flutter_icons:
   image_path: "assets/images/nnb_logo.jpeg"
 
 flutter_native_splash:
-  image: "assets/images/nnb_splash_screen_stop.png"
+  image: "assets/images/nnb_splash_screen.png"
   color: "#ffffff"
   fullscreen: true

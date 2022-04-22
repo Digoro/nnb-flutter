@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nnb_flutter/models/payment.dart';
+import 'package:nnb_flutter/pages/product_detail_page.dart';
 import 'package:nnb_flutter/services/product_service.dart';
 import '../models/product.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -28,6 +28,83 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   void initState() {
     super.initState();
     setProducts();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 40,
+        elevation: 0.0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/nnblogo.png',
+              fit: BoxFit.cover,
+              height: 40,
+              width: 40,
+            ),
+          ],
+        ),
+      ),
+      body: RefreshIndicator(
+        onRefresh: () => setProducts(),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(width: 5),
+                  homeMenuButton('#새롭게 열린', newProductsKey),
+                  SizedBox(width: 5),
+                  homeMenuButton('#주간 BEST', bestProductsKey),
+                  SizedBox(width: 5),
+                  homeMenuButton('#라이프스타일', womenProductsKey),
+                  SizedBox(width: 5),
+                  homeMenuButton('#떠나고 싶을때', travelProductsKey),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                        child: Text('새롭게 열린 모임', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: newProductsKey),
+                      ),
+                      ...newProducts.map((e) => productWidget(e, context)).toList(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                        child: Text('주간 BEST 모임!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: bestProductsKey),
+                      ),
+                      ...bestProducts.map((e) => productWidget(e, context)).toList(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                        child: Text('4050 여성들의 라이프스타일', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: womenProductsKey),
+                      ),
+                      ...womenProducts.map((e) => productWidget(e, context)).toList(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                        child: Text('문득 떠나고 싶을때', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: travelProductsKey),
+                      ),
+                      ...travelProducts.map((e) => productWidget(e, context)).toList(),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   setProducts() async {
@@ -63,88 +140,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
       travelProducts = travelData;
     });
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white,
-        toolbarHeight: 40,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/nnblogo.png',
-              fit: BoxFit.cover,
-              height: 40,
-              width: 40,
-            ),
-          ],
-        ),
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => setProducts(),
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(width: 5),
-                  homeMenuButton('새롭게 열린', newProductsKey),
-                  SizedBox(width: 5),
-                  homeMenuButton('주간 BEST', bestProductsKey),
-                  SizedBox(width: 5),
-                  homeMenuButton('라이프스타일', womenProductsKey),
-                  SizedBox(width: 5),
-                  homeMenuButton('떠나고 싶을때', travelProductsKey),
-                ],
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                        child: Text('새롭게 열린 모임', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: newProductsKey),
-                      ),
-                      ...newProducts.map((e) => productWidget(e)).toList(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                        child: Text('주간 BEST 모임!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: bestProductsKey),
-                      ),
-                      ...bestProducts.map((e) => productWidget(e)).toList(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                        child: Text('4050 여성들의 라이프스타일', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: womenProductsKey),
-                      ),
-                      ...womenProducts.map((e) => productWidget(e)).toList(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                        child: Text('문득 떠나고 싶을때', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: travelProductsKey),
-                      ),
-                      ...travelProducts.map((e) => productWidget(e)).toList(),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 homeMenuButton(String label, bestProductsKey) {
   return OutlinedButton(
-    child: Text('#$label', style: TextStyle(color: Colors.black)),
+    child: Text(label, style: TextStyle(color: Colors.black)),
     style: OutlinedButton.styleFrom(
       padding: EdgeInsets.fromLTRB(7, 0, 7, 0),
       shape: RoundedRectangleBorder(
@@ -161,8 +161,8 @@ homeMenuButton(String label, bestProductsKey) {
   );
 }
 
-productWidget(Product product) {
-  var images = product.orders
+productWidget(Product product, BuildContext context) {
+  var images = (product.orders as List<Order>)
       .where((order) => order.user != null && order.payment.paymentCancel == null)
       .map((order) => (order.user?.profilePhoto) as String)
       .toList()
@@ -173,6 +173,13 @@ productWidget(Product product) {
   return Column(
     children: [
       GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => ProductDetailPage(productId: product.id)),
+          ),
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,10 +232,6 @@ productWidget(Product product) {
             ),
           ],
         ),
-        onTap: () => {
-          print(product.title)
-          // Navigator.pushNamed(ctx, '/product-detail', arguments: ProductDetailArguments(productId: product.id)),
-        },
       ),
       Divider(
         thickness: 0.5,

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -19,12 +17,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(''),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
         toolbarHeight: 40,
       ),
-      body: Center(child: Text('프로필')),
+      body: Center(child: Text('')),
     );
   }
 }

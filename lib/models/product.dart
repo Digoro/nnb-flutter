@@ -42,7 +42,7 @@ class Product {
   // final String gift;
   // final String productConfirms;
   // final String onlineMethod;
-  final List<Order> orders;
+  final List<Order>? orders;
 
   Product({
     required this.id,
@@ -85,7 +85,7 @@ class Product {
     // required this.gift,
     // required this.productConfirms,
     // required this.onlineMethod,
-    required this.orders,
+    this.orders,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -130,7 +130,7 @@ class Product {
       // gift: json['gift'],
       // productConfirms: json['productConfirms'],
       // onlineMethod: json['onlineMethod'],
-      orders: List<Order>.from(json["orders"].map((e) => Order.fromJson(e))),
+      orders: json["orders"] == null ? null : List<Order>.from(json["orders"].map((e) => Order.fromJson(e))),
     );
   }
 }

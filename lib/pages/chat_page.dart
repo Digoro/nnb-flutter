@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const ChatPage({Key? key}) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -19,14 +17,12 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.title,
-        ),
+        title: Text(''),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
         toolbarHeight: 40,
       ),
-      body: Center(child: Text('대화')),
+      body: Center(child: Text('')),
     );
   }
 }

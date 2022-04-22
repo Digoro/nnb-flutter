@@ -1,9 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nnb_flutter/pages/chat_page.dart';
 import 'package:nnb_flutter/pages/home_page.dart';
 import 'package:nnb_flutter/pages/profile_page.dart';
 
-void main() => runApp(Main());
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)..maxConnectionsPerHost = 10;
+  }
+}
+
+void main() {
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(Main());
+}
 
 class Main extends StatelessWidget {
   const Main({Key? key}) : super(key: key);
@@ -20,9 +32,9 @@ class Main extends StatelessWidget {
             body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-                HomePage(title: '홈'),
-                ChatPage(title: '대화'),
-                ProfilePage(title: '프로필'),
+                HomePage(),
+                ChatPage(),
+                ProfilePage(),
               ],
             ),
             bottomNavigationBar: Container(

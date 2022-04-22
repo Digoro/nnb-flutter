@@ -24,7 +24,7 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   late ScrollController _scrollController;
-  Color _textColor = Colors.white;
+  Color _textColor = Colors.black;
 
   @override
   void initState() {
@@ -113,10 +113,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           getBox([
                             SizedBox(height: 10),
                             Text(product.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21, height: 1.3)),
+                            SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('${NumberFormat().format(product.price)}원', style: TextStyle(fontSize: 16)),
+                                product.discountPrice == 0
+                                    ? Text('${NumberFormat().format(product.price)}원', style: TextStyle(fontSize: 16))
+                                    : Row(children: [
+                                        Text('${NumberFormat().format(product.price)}원',
+                                            style: TextStyle(fontSize: 14, decoration: TextDecoration.lineThrough)),
+                                        SizedBox(width: 5),
+                                        Text('${NumberFormat().format(product.discountPrice)}원', style: TextStyle(fontSize: 16)),
+                                      ]),
                                 Button(
                                   label: '공유하기',
                                   onPressed: () {
@@ -141,7 +149,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       scrollDirection: Axis.horizontal,
                                       child: Row(
                                         children: [
-                                          SizedBox(width: 5),
+                                          SizedBox(width: 15),
                                           homeMenuButton('모임 소개', descriptionKey),
                                           SizedBox(width: 5),
                                           homeMenuButton('모임 장소', addressKey),
@@ -233,7 +241,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ],
             ),
             bottomNavigationBar: BottomAppBar(
-              child: Padding(padding: const EdgeInsets.all(8), child: Button(label: '참여하기', onPressed: () {})),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    IconButton(onPressed: () => {}, icon: Icon(Icons.favorite_outline)),
+                    Expanded(
+                      child: Button(label: '모임 일정 확인하기', type: 'primary', onPressed: () {}),
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         } else {

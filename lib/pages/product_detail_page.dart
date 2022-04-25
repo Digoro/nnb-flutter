@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:intl/intl.dart';
 import 'package:nnb_flutter/pages/home_page.dart';
+import 'package:nnb_flutter/pages/product_detail_appbar.dart';
 import 'package:nnb_flutter/services/product_service.dart';
 import 'package:nnb_flutter/widgets/button.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -24,29 +22,19 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   late ScrollController _scrollController;
-  Color _textColor = Colors.black;
+  late final Future<Product> getProductFuture;
 
   @override
   void initState() {
     super.initState();
-
-    _scrollController = ScrollController()
-      ..addListener(() {
-        print('scroll');
-        // setState(() {
-        //   _textColor = _isSliverAppBarExpanded ? Colors.black : Colors.white;
-        // });
-      });
-  }
-
-  bool get _isSliverAppBarExpanded {
-    return _scrollController.hasClients && _scrollController.offset > (200 - kToolbarHeight);
+    getProductFuture = getProduct(widget.productId, null);
+    _scrollController = ScrollController();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getProduct(widget.productId, null),
+      future: getProductFuture,
       builder: (BuildContext context, AsyncSnapshot<Product> snapshot) {
         if (snapshot.hasData) {
           var product = snapshot.data as Product;
@@ -64,46 +52,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             body: CustomScrollView(
               controller: _scrollController,
               slivers: <Widget>[
-                SliverAppBar(
-                  pinned: true,
-                  snap: false,
-                  floating: false,
-                  expandedHeight: 320.0,
-                  toolbarHeight: 40,
-                  backgroundColor: Colors.white,
-                  iconTheme: IconThemeData(color: _textColor),
-                  elevation: 0.0,
-                  leading: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  actions: [
-                    IconButton(
-                      icon: Icon(Icons.home_outlined),
-                      onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomePage())),
-                    ),
-                    IconButton(
-                      icon: Icon(Platform.isIOS ? Icons.ios_share_rounded : Icons.share_rounded),
-                      onPressed: () {
-                        Clipboard.setData(ClipboardData(text: 'https://nonunbub.com/tabs/meeting-detail/${product.id}'));
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("링크가 복사되었습니다."),
-                        ));
-                      },
-                    ),
-                  ],
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: ImageSlideshow(
-                      width: double.infinity,
-                      height: 320,
-                      initialPage: 0,
-                      indicatorColor: Colors.blue,
-                      indicatorBackgroundColor: Colors.grey,
-                      children: product.representationPhotos.map((e) => Image.network(e.photo, fit: BoxFit.cover)).toList(),
-                      isLoop: false,
-                    ),
-                  ),
-                ),
+                ProductDetailAppBar(product: product, scrollController: _scrollController),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
@@ -137,10 +86,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ],
                             ),
                           ]),
-                          NDivider(),
                           StickyHeader(
                             header: Padding(
-                              padding: const EdgeInsets.only(top: 40),
+                              padding: const EdgeInsets.only(top: 35),
                               child: Row(children: [
                                 Expanded(
                                   child: Container(

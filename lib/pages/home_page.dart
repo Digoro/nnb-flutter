@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        toolbarHeight: 40,
+        toolbarHeight: 60,
         elevation: 0.0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -163,7 +163,7 @@ homeMenuButton(String label, bestProductsKey) {
 
 productWidget(Product product, BuildContext context) {
   var images = (product.orders as List<Order>)
-      .where((order) => order.user != null && order.payment.paymentCancel == null)
+      .where((order) => order.user != null && order.payment?.paymentCancel == null)
       .map((order) => (order.user?.profilePhoto) as String)
       .toList()
       .reversed
@@ -175,10 +175,7 @@ productWidget(Product product, BuildContext context) {
       GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => ProductDetailPage(productId: product.id)),
-          ),
+          Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailPage(productId: product.id))),
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

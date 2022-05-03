@@ -3,12 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:nnb_flutter/pages/home_page.dart';
+import 'package:nnb_flutter/pages/login_page.dart';
+import 'package:nnb_flutter/pages/payment_select_page.dart';
 import 'package:nnb_flutter/pages/product_detail_appbar.dart';
 import 'package:nnb_flutter/services/product_service.dart';
 import 'package:nnb_flutter/widgets/button.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
 import '../models/product.dart';
+import '../services/auth_service.dart';
 import '../widgets/divider.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -66,7 +69,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                product.discountPrice == 0
+                                product.discountPrice == null
                                     ? Text('${NumberFormat().format(product.price)}원', style: TextStyle(fontSize: 16))
                                     : Row(children: [
                                         Text('${NumberFormat().format(product.price)}원',
@@ -87,8 +90,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                           ]),
                           StickyHeader(
-                            header: Padding(
-                              padding: const EdgeInsets.only(top: 35),
+                            header: Container(
+                              margin: EdgeInsets.only(top: 50),
                               child: Row(children: [
                                 Expanded(
                                   child: Container(
@@ -115,15 +118,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             content: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: 20, key: descriptionKey),
+                                SizedBox(height: 20),
                                 getBox([
-                                  Text('체크 포인트!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                                  Html(data: product.checkList),
+                                  Text('체크 포인트!', key: descriptionKey, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                                  Html(
+                                    data: product.checkList,
+                                    style: {'html': Style(whiteSpace: WhiteSpace.PRE)},
+                                  ),
                                 ]),
                                 NDivider(),
                                 getBox([
                                   Text('이런 분이 함께하면 좋아요!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                                  Html(data: product.recommend),
+                                  Html(
+                                    data: product.recommend,
+                                    style: {'html': Style(whiteSpace: WhiteSpace.PRE)},
+                                  ),
                                 ]),
                                 NDivider(),
                                 getBox([
@@ -195,7 +204,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   children: [
                     IconButton(onPressed: () => {}, icon: Icon(Icons.favorite_outline)),
                     Expanded(
-                      child: Button(label: '모임 일정 확인하기', type: 'primary', onPressed: () {}),
+                      child: Button(
+                          label: '모임 일정 확인하기',
+                          type: 'primary',
+                          onPressed: () async {
+                            var isLogin = await isAuth();
+                            if (!isLogin) {
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
+                            } else {
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentSelectPage(product: product)));
+                            }
+                          }),
                     ),
                   ],
                 ),

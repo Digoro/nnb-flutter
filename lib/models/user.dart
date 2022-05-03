@@ -23,8 +23,8 @@ class User {
   final String? address;
   final String? detailAddress;
   final String? geoLocation;
-  final String createdAt;
-  final String updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   User({
     required this.id,
@@ -81,8 +81,8 @@ class User {
       address: json['address'],
       detailAddress: json['detailAddress'],
       geoLocation: json['geoLocation'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 }
@@ -96,10 +96,37 @@ class NonMember {
 }
 
 class Coupon {
-  Coupon();
+  final int id;
+  final String name;
+  final String contents;
+  final int price;
+  final String expireDuration;
+  final int minOrderPrice;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  Coupon({
+    required this.id,
+    required this.name,
+    required this.contents,
+    required this.price,
+    required this.expireDuration,
+    required this.minOrderPrice,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
   factory Coupon.fromJson(Map<String, dynamic> json) {
-    return Coupon();
+    return Coupon(
+      id: json['id'],
+      name: json['name'],
+      contents: json['contents'],
+      price: json['price'],
+      expireDuration: json['expireDuration'],
+      minOrderPrice: json['minOrderPrice'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
   }
 }
 

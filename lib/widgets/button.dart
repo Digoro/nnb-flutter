@@ -15,9 +15,7 @@ class Button extends StatelessWidget {
             textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             backgroundColor: Color.fromRGBO(142, 70, 236, 1),
           )
-        : TextButton.styleFrom(
-            primary: Colors.black,
-          );
+        : TextButton.styleFrom(primary: Colors.black);
     return SizedBox(
       height: 40,
       child: OutlinedButton(

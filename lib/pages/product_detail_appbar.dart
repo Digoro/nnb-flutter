@@ -41,10 +41,10 @@ class _ProductDetailAppBarState extends State<ProductDetailAppBar> {
       snap: false,
       floating: false,
       expandedHeight: 320.0,
-      toolbarHeight: 40,
+      toolbarHeight: 60,
       backgroundColor: Colors.white,
       iconTheme: IconThemeData(color: widget.textColor),
-      elevation: 0.0,
+      elevation: 1,
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context),

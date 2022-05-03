@@ -35,9 +35,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_image_slideshow: ^0.1.2
   intl: ^0.17.0
-  flutter_html: ^2.2.1
   dio: ^4.0.6
   sticky_headers: ^0.2.0
+  flutter_secure_storage: ^5.0.2
+  table_calendar: ^3.0.5
+  jwt_decoder: ^2.0.1
+  flutter_html: ^2.2.1
+  url_launcher: ^6.1.0
 
 dev_dependencies:
   flutter_test:

@@ -32,9 +32,9 @@ class Product {
   final String color;
   // final String hashtags;
   // final String categories;
-  final int likes;
+  final int? likes;
   // final bool isSetLike;
-  // final String options;
+  final List<ProductOption>? options;
   final String createdAt;
   final String updatedAt;
   final List<RepresentationPhoto> representationPhotos;
@@ -75,9 +75,9 @@ class Product {
     required this.color,
     // required this.hashtags,
     // required this.categories,
-    required this.likes,
+    this.likes,
     // required this.isSetLike,
-    // required this.options,
+    this.options,
     required this.createdAt,
     required this.updatedAt,
     required this.representationPhotos,
@@ -122,7 +122,7 @@ class Product {
       // categories: json['categories'],
       likes: json['likes'],
       // isSetLike: json['isSetLike'],
-      // options: json['options'],
+      options: json["options"] == null ? null : List<ProductOption>.from(json["options"].map((e) => ProductOption.fromJson(e))),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
       representationPhotos: List<RepresentationPhoto>.from(json["representationPhotos"].map((e) => RepresentationPhoto.fromJson(e))),
@@ -151,6 +151,56 @@ class RepresentationPhoto {
       id: json['id'],
       photo: json['photo'],
       sortOrder: json['sortOrder'],
+    );
+  }
+}
+
+class ProductOption {
+  final int id;
+  final String name;
+  final int price;
+  final String? description;
+  final DateTime date;
+  final int minParticipants;
+  final int maxParticipants;
+  final bool isOld;
+  // final String orderItems;
+  // final int totalPaymentCount;
+  final bool isReservationEnd;
+  // final int count;
+  // final Product product;
+
+  ProductOption({
+    required this.id,
+    required this.name,
+    required this.price,
+    this.description,
+    required this.date,
+    required this.minParticipants,
+    required this.maxParticipants,
+    required this.isOld,
+    // required this.orderItems,
+    // required this.totalPaymentCount,
+    required this.isReservationEnd,
+    // required this.count,
+    // required this.product
+  });
+
+  factory ProductOption.fromJson(Map<String, dynamic> json) {
+    return ProductOption(
+      id: json['id'],
+      name: json['name'],
+      price: json['price'],
+      description: json['description'],
+      date: DateTime.parse(json['date']),
+      minParticipants: json['minParticipants'],
+      maxParticipants: json['maxParticipants'],
+      isOld: json['isOld'],
+      // orderItems: json['orderItems'],
+      // totalPaymentCount: json['totalPaymentCount'],
+      isReservationEnd: json['isReservationEnd'],
+      // count: json['count'],
+      // product: json['product'],
     );
   }
 }

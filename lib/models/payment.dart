@@ -1,3 +1,4 @@
+import 'package:nnb_flutter/models/product.dart';
 import 'package:nnb_flutter/models/user.dart';
 
 class Payment {
@@ -5,7 +6,7 @@ class Payment {
   final Order? order;
   final String? pgName;
   final String? pgOrderId;
-  final String payAt;
+  final DateTime payAt;
   final int totalPrice;
   final String payMethod;
   final int payPrice;
@@ -17,10 +18,10 @@ class Payment {
   final String? cardReceipt;
   final String? bankName;
   final String? bankNum;
-  final String createdAt;
-  final String updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   final bool isRequestReview;
-  final List<Review>? reviews;
+  // final List<Review>? reviews;
   final PaymentCancel? paymentCancel;
   final List<Feed>? feed;
   final dynamic error;
@@ -45,7 +46,7 @@ class Payment {
     required this.createdAt,
     required this.updatedAt,
     required this.isRequestReview,
-    required this.reviews,
+    // required this.reviews,
     this.paymentCancel,
     required this.feed,
     required this.error,
@@ -57,7 +58,7 @@ class Payment {
       order: json['order'] == null ? null : Order.fromJson(json['order']),
       pgName: json['pgName'],
       pgOrderId: json['pgOrderId'],
-      payAt: json['payAt'],
+      payAt: DateTime.parse(json['payAt']),
       totalPrice: json['totalPrice'],
       payMethod: json['payMethod'],
       payPrice: json['payPrice'],
@@ -69,10 +70,10 @@ class Payment {
       cardReceipt: json['cardReceipt'],
       bankName: json['bankName'],
       bankNum: json['bankNum'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
       isRequestReview: json['isRequestReview'],
-      reviews: json['reviews'],
+      // reviews: json['reviews'],
       paymentCancel: json['paymentCancel'] == null ? null : PaymentCancel.fromJson(json['paymentCancel']),
       feed: json['feed'],
       error: json['error'],
@@ -87,9 +88,11 @@ class Order {
   final Coupon? coupon;
   final Gift? gift;
   final int? point;
-  final String orderAt;
+  final DateTime orderAt;
   final String? description;
-  final Payment payment;
+  final List<OrderItem>? orderItems;
+  final Product? product;
+  final Payment? payment;
 
   Order({
     required this.id,
@@ -100,7 +103,9 @@ class Order {
     this.point,
     required this.orderAt,
     this.description,
-    required this.payment,
+    this.orderItems,
+    this.product,
+    this.payment,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
@@ -111,18 +116,35 @@ class Order {
       coupon: json['coupon'] == null ? null : Coupon.fromJson(json['coupon']),
       gift: json['gift'] == null ? null : Gift.fromJson(json['gift']),
       point: json['point'],
-      orderAt: json['orderAt'],
+      orderAt: DateTime.parse(json['orderAt']),
       description: json['description'],
-      payment: Payment.fromJson(json['payment']),
+      orderItems: json['orderItems'] == null ? null : List<OrderItem>.from(json["orderItems"].map((e) => OrderItem.fromJson(e))),
+      product: json['product'] == null ? null : Product.fromJson(json['product']),
+      payment: json['payment'] == null ? null : Payment.fromJson(json['payment']),
     );
   }
 }
 
 class OrderItem {
-  OrderItem();
+  final int id;
+  final Order? order;
+  final ProductOption productOption;
+  final int count;
+
+  OrderItem({
+    required this.id,
+    this.order,
+    required this.productOption,
+    required this.count,
+  });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
-    return OrderItem();
+    return OrderItem(
+      id: json['id'],
+      order: json['order'] == null ? null : Order.fromJson(json['order']),
+      productOption: ProductOption.fromJson(json['productOption']),
+      count: json['count'],
+    );
   }
 }
 
@@ -135,10 +157,31 @@ class Review {
 }
 
 class PaymentCancel {
-  PaymentCancel();
+  final int id;
+  final String reason;
+  final int refundPrice;
+  final DateTime cancelAt;
+  final bool refundCoupon;
+  final bool refundPoint;
+
+  PaymentCancel({
+    required this.id,
+    required this.reason,
+    required this.refundPrice,
+    required this.cancelAt,
+    required this.refundCoupon,
+    required this.refundPoint,
+  });
 
   factory PaymentCancel.fromJson(Map<String, dynamic> json) {
-    return PaymentCancel();
+    return PaymentCancel(
+      id: json['id'],
+      reason: json['reason'],
+      refundPrice: json['refundPrice'],
+      cancelAt: DateTime.parse(json['cancelAt']),
+      refundCoupon: json['refundCoupon'],
+      refundPoint: json['refundPoint'],
+    );
   }
 }
 

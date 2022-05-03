@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:nnb_flutter/pages/chat_page.dart';
+import 'package:nnb_flutter/pages/feed_page.dart';
 import 'package:nnb_flutter/pages/home_page.dart';
 import 'package:nnb_flutter/pages/profile_page.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:nnb_flutter/services/auth_service.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -13,8 +15,10 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  setInterceptor();
   HttpOverrides.global = MyHttpOverrides();
-  runApp(Main());
+  initializeDateFormatting().then((_) => runApp(Main()));
 }
 
 class Main extends StatelessWidget {
@@ -24,7 +28,9 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: '노는법 ',
-        theme: ThemeData(primarySwatch: Colors.deepPurple),
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+        ),
         debugShowCheckedModeBanner: false,
         home: DefaultTabController(
           length: 3,
@@ -33,7 +39,7 @@ class Main extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               children: [
                 HomePage(),
-                ChatPage(),
+                FeedPage(),
                 ProfilePage(),
               ],
             ),
@@ -45,15 +51,15 @@ class Main extends StatelessWidget {
                 indicatorColor: Colors.white,
                 tabs: [
                   Tab(
-                    text: "홈",
-                    icon: Icon(Icons.home),
+                    text: "모임",
+                    icon: Icon(Icons.space_dashboard),
                   ),
                   Tab(
-                    text: "대화",
-                    icon: Icon(Icons.chat_bubble),
+                    text: "커뮤니티",
+                    icon: Icon(Icons.feed_rounded),
                   ),
                   Tab(
-                    text: "프로필",
+                    text: "마이페이지",
                     icon: Icon(Icons.person),
                   ),
                 ],

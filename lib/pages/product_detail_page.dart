@@ -27,6 +27,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   late ScrollController _scrollController;
   late final Future<Product> getProductFuture;
 
+  dynamic descriptionKey = GlobalKey();
+  dynamic addressKey = GlobalKey();
+  dynamic infoKey = GlobalKey();
+  dynamic hostKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -45,11 +50,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           var runningHours = product.runningHours != 0 ? '${product.runningHours}시간' : '';
           var runningMinutes = product.runningMinutes != 0 ? '${product.runningMinutes}분' : '';
           var runningTime = '$runningDays$runningHours$runningMinutes 소요';
-
-          dynamic descriptionKey = GlobalKey();
-          dynamic addressKey = GlobalKey();
-          dynamic infoKey = GlobalKey();
-          dynamic hostKey = GlobalKey();
 
           return Scaffold(
             body: CustomScrollView(

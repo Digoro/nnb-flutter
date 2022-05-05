@@ -103,9 +103,9 @@ class _MyPaymentDetailPageState extends State<MyPaymentDetailPage> {
                       ?.map((item) => Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('옵션: ${item.productOption.name}'),
-                              Text('시작일: ${getDateTime(item.productOption.date)}'),
-                              Text('가격: ${item.productOption.price}원'),
+                              Text('옵션: ${item.productOption?.name}'),
+                              Text('시작일: ${getDateTime(item.productOption?.date)}'),
+                              Text('가격: ${item.productOption?.price}원'),
                               Text('수량: ${item.count}개'),
                               if (widget.payment!.order!.orderItems!.length > 1) Divider()
                             ],

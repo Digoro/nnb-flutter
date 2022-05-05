@@ -16,10 +16,10 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   List<dynamic> bestProducts = [];
   List<dynamic> womenProducts = [];
   List<dynamic> travelProducts = [];
-  dynamic newProductsKey = GlobalKey();
-  dynamic bestProductsKey = GlobalKey();
-  dynamic womenProductsKey = GlobalKey();
-  dynamic travelProductsKey = GlobalKey();
+  GlobalKey newProductsKey = GlobalKey();
+  GlobalKey bestProductsKey = GlobalKey();
+  GlobalKey womenProductsKey = GlobalKey();
+  GlobalKey travelProductsKey = GlobalKey();
 
   @override
   bool get wantKeepAlive => true;
@@ -88,14 +88,14 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                       ...bestProducts.map((e) => productWidget(e, context)).toList(),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                        child: Text('4050 여성들의 라이프스타일', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: womenProductsKey),
-                      ),
-                      ...womenProducts.map((e) => productWidget(e, context)).toList(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                         child: Text('문득 떠나고 싶을때', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: travelProductsKey),
                       ),
                       ...travelProducts.map((e) => productWidget(e, context)).toList(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                        child: Text('4050 여성들의 라이프스타일', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), key: womenProductsKey),
+                      ),
+                      ...womenProducts.map((e) => productWidget(e, context)).toList(),
                     ],
                   ),
                 ),
@@ -120,29 +120,29 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
       "status": "오픈중",
       "analysisHashtags": ["best"]
     });
-    var womenData = await getProducts({
-      "page": 1,
-      "limit": 9999,
-      "status": "오픈중",
-      "categoryIds": [6, 7, 8, 9, 10, 11, 12]
-    });
     var travelData = await getProducts({
       "page": 1,
       "limit": 9999,
       "status": "오픈중",
       "categoryIds": [1]
     });
+    var womenData = await getProducts({
+      "page": 1,
+      "limit": 9999,
+      "status": "오픈중",
+      "categoryIds": [6, 7, 8, 9, 10, 11, 12]
+    });
 
     setState(() {
       newProducts = newData;
       bestProducts = bestData;
-      womenProducts = womenData;
       travelProducts = travelData;
+      womenProducts = womenData;
     });
   }
 }
 
-homeMenuButton(String label, bestProductsKey) {
+homeMenuButton(String label, GlobalKey key) {
   return OutlinedButton(
     child: Text(label, style: TextStyle(color: Colors.black)),
     style: OutlinedButton.styleFrom(
@@ -153,7 +153,7 @@ homeMenuButton(String label, bestProductsKey) {
     ),
     onPressed: () => {
       Scrollable.ensureVisible(
-        bestProductsKey.currentContext,
+        key.currentContext!,
         duration: Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       ),

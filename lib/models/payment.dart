@@ -128,13 +128,13 @@ class Order {
 class OrderItem {
   final int id;
   final Order? order;
-  final ProductOption productOption;
+  final ProductOption? productOption;
   final int count;
 
   OrderItem({
     required this.id,
     this.order,
-    required this.productOption,
+    this.productOption,
     required this.count,
   });
 
@@ -142,7 +142,7 @@ class OrderItem {
     return OrderItem(
       id: json['id'],
       order: json['order'] == null ? null : Order.fromJson(json['order']),
-      productOption: ProductOption.fromJson(json['productOption']),
+      productOption: json['productOption'] == null ? null : ProductOption.fromJson(json['productOption']),
       count: json['count'],
     );
   }

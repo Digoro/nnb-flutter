@@ -156,18 +156,18 @@ class RepresentationPhoto {
 }
 
 class ProductOption {
-  final int id;
-  final String name;
-  final int price;
-  final String? description;
-  final DateTime date;
-  final int minParticipants;
-  final int maxParticipants;
-  final bool isOld;
-  // final String orderItems;
-  // final int totalPaymentCount;
-  final bool isReservationEnd;
-  // final int count;
+  int id;
+  String name;
+  int price;
+  String? description;
+  DateTime date;
+  int minParticipants;
+  int maxParticipants;
+  bool isOld;
+  List<OrderItem>? orderItems;
+  int totalPaymentCount;
+  bool isReservationEnd;
+  int count;
   // final Product product;
 
   ProductOption({
@@ -179,10 +179,10 @@ class ProductOption {
     required this.minParticipants,
     required this.maxParticipants,
     required this.isOld,
-    // required this.orderItems,
-    // required this.totalPaymentCount,
+    this.orderItems,
+    required this.totalPaymentCount,
     required this.isReservationEnd,
-    // required this.count,
+    required this.count,
     // required this.product
   });
 
@@ -196,10 +196,10 @@ class ProductOption {
       minParticipants: json['minParticipants'],
       maxParticipants: json['maxParticipants'],
       isOld: json['isOld'],
-      // orderItems: json['orderItems'],
-      // totalPaymentCount: json['totalPaymentCount'],
+      orderItems: json["orderItems"] == null ? null : List<OrderItem>.from(json["orderItems"].map((e) => OrderItem.fromJson(e))),
+      totalPaymentCount: 0,
       isReservationEnd: json['isReservationEnd'],
-      // count: json['count'],
+      count: 0,
       // product: json['product'],
     );
   }

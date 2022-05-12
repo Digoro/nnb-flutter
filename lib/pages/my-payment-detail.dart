@@ -69,7 +69,7 @@ class _MyPaymentDetailPageState extends State<MyPaymentDetailPage> {
                           label: '실시간 카카오톡 문의',
                           onPressed: () {
                             launchUrl(
-                              Uri.parse('https://nonunbub.com/host'),
+                              Uri.parse('https://pf.kakao.com/_lyeixb/chat'),
                               mode: LaunchMode.externalApplication,
                             );
                           }))

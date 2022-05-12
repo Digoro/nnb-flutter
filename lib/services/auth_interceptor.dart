@@ -1,8 +1,18 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nnb_flutter/services/dio.dart';
 import '../config.dart';
 import '../models/user.dart';
+
+setInterceptor() async {
+  print('setInterceptor');
+  var token = await getToken();
+  dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+    options.headers['Authorization'] = 'Bearer $token';
+    return handler.next(options);
+  }));
+}
 
 Future<String?> getToken() async {
   final storage = FlutterSecureStorage();

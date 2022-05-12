@@ -33,7 +33,7 @@ class Product {
   // final String hashtags;
   // final String categories;
   final int? likes;
-  // final bool isSetLike;
+  bool? isSetLike;
   final List<ProductOption>? options;
   final String createdAt;
   final String updatedAt;
@@ -76,7 +76,7 @@ class Product {
     // required this.hashtags,
     // required this.categories,
     this.likes,
-    // required this.isSetLike,
+    required this.isSetLike,
     this.options,
     required this.createdAt,
     required this.updatedAt,
@@ -121,7 +121,7 @@ class Product {
       // hashtags: json['hashtags'],
       // categories: json['categories'],
       likes: json['likes'],
-      // isSetLike: json['isSetLike'],
+      isSetLike: json['isSetLike'],
       options: json["options"] == null ? null : List<ProductOption>.from(json["options"].map((e) => ProductOption.fromJson(e))),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],

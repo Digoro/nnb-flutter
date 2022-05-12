@@ -28,3 +28,13 @@ Future<Product> getProduct(int productId, int? userId) async {
     throw Exception('Failed to load get');
   }
 }
+
+Future<dynamic> like(int productId, bool isLike) async {
+  var url = '${Config.host}/api/users/likes/product';
+  final response = await dio.post(url, data: {"id": productId, "isLike": isLike});
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    return response;
+  } else {
+    throw Exception('Failed to load post');
+  }
+}

@@ -52,7 +52,7 @@ class _ProductDetailAppBarState extends State<ProductDetailAppBar> {
       actions: [
         IconButton(
           icon: Icon(Icons.home_outlined),
-          onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomePage())),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage())),
         ),
         IconButton(
           icon: Icon(Platform.isIOS ? Icons.ios_share_rounded : Icons.share_rounded),

@@ -42,6 +42,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   flutter_html: ^2.2.1
   url_launcher: ^6.1.0
+  kakao_flutter_sdk_user: ^1.1.0
+  flutter_naver_login: ^1.4.0
 
 dev_dependencies:
   flutter_test:

@@ -11,6 +11,7 @@ import 'package:nnb_flutter/widgets/button.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
 import '../models/product.dart';
+import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../widgets/divider.dart';
 
@@ -26,6 +27,8 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   late ScrollController _scrollController;
   late final Future<Product> getProductFuture;
+  User? user;
+  bool? isSetLike;
 
   dynamic descriptionKey = GlobalKey();
   dynamic addressKey = GlobalKey();
@@ -35,8 +38,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   void initState() {
     super.initState();
-    getProductFuture = getProduct(widget.productId, null);
+    getProductFuture = getProductByUser();
     _scrollController = ScrollController();
+  }
+
+  Future<Product> getProductByUser() async {
+    User? user = await getUser();
+    return await getProduct(widget.productId, user?.id);
   }
 
   @override
@@ -202,7 +210,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 padding: const EdgeInsets.all(8),
                 child: Row(
                   children: [
-                    IconButton(onPressed: () => {}, icon: Icon(Icons.favorite_outline)),
+                    IconButton(
+                      onPressed: () async {
+                        var isLogin = await isAuth();
+                        if (!isLogin) {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
+                        } else {
+                          bool productLike = product.isSetLike == true ? false : true;
+                          like(widget.productId, productLike).then((value) {
+                            setState(() {
+                              product.isSetLike = productLike;
+                            });
+                            if (product.isSetLike == true) {
+                              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('찜하였습니다.')),
+                              );
+                            }
+                          });
+                        }
+                      },
+                      icon: Icon(product.isSetLike == true ? Icons.favorite : Icons.favorite_outline, size: 28),
+                      color: Colors.red,
+                    ),
                     Expanded(
                       child: Button(
                           label: '모임 일정 확인하기',
